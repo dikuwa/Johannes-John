@@ -1,0 +1,48 @@
+# ── Environment & Secrets ──
+.env
+.env.local
+.env.production
+.env.development
+.env.*.local
+*.pem
+
+# ── Dependencies ──
+node_modules/
+.pnpm-store/
+
+# ── Next.js Build ──
+.next/
+out/
+
+# ── Prisma Generated Client ──
+lib/generated/prisma/
+
+# ── Testing ──
+coverage/
+
+# ── OS Files ──
+.DS_Store
+Thumbs.db
+
+# ── IDE / Editor ──
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Debug Logs ──
+*.log
+debug_script.js
+warp_docktile_*.log
+next-dev.log
+
+# ── TypeScript ──
+*.tsbuildinfo
+next-env.d.ts
+
+# ── Boost Interprocess (temp OS files) ──
+boost_interprocess/
+
+# ── TNT Shadow Files ──
+tnt*/

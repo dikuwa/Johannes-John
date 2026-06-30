@@ -1,0 +1,510 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============== AUTH MODELS (Better Auth) ==============
+
+model User {
+  id                  String     @id @default(cuid())
+  name                String
+  email               String     @unique
+  emailVerified       Boolean    @default(false)
+  image               String?
+  password            String?    // Hashed password - stored via Account for Better Auth
+  role                UserRole   @default(STAFF)
+  status              UserStatus @default(ACTIVE)
+  permissions         Json?      // Array of permission strings
+  twoFactorEnabled    Boolean    @default(false)
+  mustChangePassword  Boolean    @default(false)
+  jobTitle            String?
+  phone               String?
+  profileEmail        String?
+  passwordChangedAt   DateTime?
+  lastActiveAt        DateTime?
+  invitedById         String?
+  deletedAt           DateTime?
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+
+  // Relations
+  sessions      Session[]
+  accounts      Account[]
+  notifications Notification[]
+  payments      PaymentRecord[]
+  receipts      Receipt[]
+  followUps     FollowUp[]
+  invitationsCreated Invitation[] @relation("InvitedBy")
+  invitedUsers  User[]    @relation("UserInvitedBy")
+  invitedBy     User?     @relation("UserInvitedBy", fields: [invitedById], references: [id])
+  auditLogs     AuditLog[]
+  twoFactor     TwoFactor?
+
+  @@index([email])
+  @@index([role])
+  @@index([status])
+}
+
+model TwoFactor {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  secret      String
+  backupCodes String
+  verified    Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  email        String?
+  token        String   @unique
+  expiresAt    DateTime
+  ipAddress    String?
+  userAgent    String?
+  impersonatedBy String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?   // For email/password provider
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([identifier])
+}
+
+// ============== INVITATION SYSTEM ==============
+
+model Invitation {
+  id          String           @id @default(cuid())
+  email       String
+  name        String
+  role        UserRole
+  permissions Json?            // Array of permission strings
+  tokenHash   String           @unique
+  shortCode   String?          @unique
+  status      InvitationStatus @default(PENDING)
+  expiresAt   DateTime
+  invitedById String
+  acceptedAt  DateTime?
+  acceptedById String?
+  phone       String?
+  note        String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  invitedBy   User    @relation("InvitedBy", fields: [invitedById], references: [id])
+
+  @@index([email])
+  @@index([tokenHash])
+  @@index([shortCode])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+// ============== AUDIT LOG ==============
+
+model AuditLog {
+  id              String   @id @default(cuid())
+  actorId         String?
+  actorEmail      String?
+  actorRole       UserRole?
+  action          String   // e.g., "invitation.created", "user.role_changed"
+  targetType      String   // e.g., "user", "invitation", "order"
+  targetId        String?
+  targetLabel     String?  // Human-readable label
+  metadata        Json?    // Additional context
+  beforeValues    Json?    // For tracking changes
+  afterValues     Json?    // For tracking changes
+  ipAddress       String?
+  userAgent       String?
+  createdAt       DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id])
+
+  @@index([actorId])
+  @@index([action])
+  @@index([targetType, targetId])
+  @@index([createdAt])
+}
+
+// ============== PASSWORD RESET ==============
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  email     String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([tokenHash])
+  @@index([email])
+  @@index([expiresAt])
+}
+
+// ============== RATE LIMITING ==============
+
+model RateLimit {
+  id        String   @id @default(cuid())
+  key       String   // Composite key: action:identifier (e.g., "login:email@example.com")
+  count     Int      @default(0)
+  windowStart DateTime
+  createdAt DateTime @default(now())
+
+  @@unique([key])
+  @@index([key])
+  @@index([windowStart])
+}
+
+// ============== STORE MODELS ==============
+
+model Customer {
+  id               String   @id @default(cuid())
+  fullName         String
+  phone            String
+  whatsapp         String?
+  email            String?
+  preferredContact String   @default("WhatsApp")
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  orders Order[]
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  parentId    String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryHierarchy")
+  products Product[]
+}
+
+model Brand {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  logo        String?
+  isActive    Boolean  @default(true)
+  isFeatured  Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Product {
+  id                  String   @id @default(cuid())
+  name                String
+  slug                String   @unique
+  sku                 String?
+  brand               String?
+  categoryId          String
+  condition           String   @default("New")
+  description         String
+  specifications      String?
+  priceCents          Int
+  compareAtPriceCents Int?
+  currency            String   @default("NAD")
+  stockQuantity       Int      @default(0)
+  lowStockThreshold   Int      @default(5)
+  availability        String   @default("InStock")
+  warranty            String?
+  isFeatured          Boolean  @default(false)
+  isPublished         Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  category            Category        @relation(fields: [categoryId], references: [id])
+  images              ProductImage[]
+  orderItems          OrderItem[]
+  promotions          PromotionProduct[]
+  backInStockRequests BackInStockRequest[]
+}
+
+model ProductImage {
+  id        String   @id @default(cuid())
+  productId String
+  url       String
+  altText   String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}model Promotion {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  description     String?
+  bannerImageUrl  String?
+  discountLabel   String?
+  startsAt        DateTime?
+  endsAt          DateTime?
+  isActive        Boolean   @default(true)
+  isFeatured      Boolean   @default(true)
+  placement       String    @default("FeaturedSection")
+  type            String    @default("general")
+  images          Json?
+  linkedProductId String?
+  linkedCategory  String?
+  serviceSlug     String?
+  ctaLabel        String?
+  sortOrder       Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  products PromotionProduct[]
+}
+
+model PromotionProduct {
+  id          String @id @default(cuid())
+  promotionId String
+  productId   String
+
+  promotion Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([promotionId, productId])
+}
+
+model Order {
+  id                String   @id @default(cuid())
+  orderNumber       String   @unique
+  customerId        String
+  status            String   @default("Pending")
+  contactStatus     String   @default("NotContacted")
+  paymentStatus     String   @default("Unpaid")
+  fulfillmentStatus String   @default("Pending")
+  preferredContact  String   @default("WhatsApp")
+  subtotalCents     Int      @default(0)
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  customer  Customer        @relation(fields: [customerId], references: [id])
+  items     OrderItem[]
+  payments  PaymentRecord[]
+  receipts  Receipt[]
+  followUps FollowUp[]
+}
+
+model OrderItem {
+  id             String @id @default(cuid())
+  orderId        String
+  productId      String
+  productName    String
+  quantity       Int
+  unitPriceCents Int
+  totalCents     Int
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model PaymentRecord {
+  id           String   @id @default(cuid())
+  orderId      String
+  amountCents  Int
+  method       String   @default("Cash")
+  status       String   @default("Pending")
+  recordedById String
+  note         String?
+  recordedAt   DateTime @default(now())
+
+  order      Order @relation(fields: [orderId], references: [id])
+  recordedBy User  @relation(fields: [recordedById], references: [id])
+}
+
+model Receipt {
+  id            String    @id @default(cuid())
+  orderId       String
+  receiptNumber String    @unique
+  pdfUrl        String?
+  issuedById    String
+  sentVia       String    @default("NotSent")
+  sentAt        DateTime?
+  issuedAt      DateTime  @default(now())
+
+  order    Order @relation(fields: [orderId], references: [id])
+  issuedBy User  @relation(fields: [issuedById], references: [id])
+}
+
+model FollowUp {
+  id           String   @id @default(cuid())
+  orderId      String
+  assignedToId String?
+  type         String   @default("WhatsApp")
+  status       String   @default("Pending")
+  note         String
+  dueAt        DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime @default(now())
+
+  order      Order @relation(fields: [orderId], references: [id])
+  assignedTo User? @relation(fields: [assignedToId], references: [id])
+}
+
+model Notification {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  title             String
+  message           String
+  isRead            Boolean  @default(false)
+  relatedEntityType String?
+  relatedEntityId   String?
+  createdAt         DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model BackInStockRequest {
+  id               String   @id @default(cuid())
+  productId        String
+  productName      String
+  customerName     String
+  preferredContact String   @default("WhatsApp")
+  contactValue     String
+  urgency          String   @default("Flexible")
+  note             String?
+  status           String   @default("New")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  fullName  String
+  phone     String?
+  whatsapp  String?
+  email     String?
+  subject   String?
+  message   String
+  status    String   @default("New")
+  createdAt DateTime @default(now())
+}
+
+model StoreSetting {
+  id   String @id @default("default")
+  data String
+}
+
+// ============== SERVICES PAGE ==============
+
+model Service {
+  id              String   @id @default(cuid())
+  title           String
+  description     String
+  icon            String   @default("Wrench")
+  imageUrl        String?
+  sortOrder       Int      @default(0)
+  isEnabled       Boolean  @default(true)
+  features        Json?    // Array of feature strings
+  // Primary CTA
+  primaryCtaLabel     String  @default("Enquire Now")
+  primaryCtaType      String  @default("whatsapp")
+  primaryCtaDest      String?
+  primaryCtaVisible   Boolean @default(true)
+  // Secondary CTA
+  secondaryCtaLabel   String  @default("Call Us")
+  secondaryCtaType    String  @default("phone")
+  secondaryCtaDest    String?
+  secondaryCtaVisible Boolean @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sortOrder])
+  @@index([isEnabled])
+}
+
+// ============== DOCUMENT SHARING ==============
+
+model DocumentShare {
+  id             String    @id @default(cuid())
+  shortCode      String    @unique
+  token          String    // The underlying signed document token
+  documentType   String    // "receipt" | "quotation" | "invoice"
+  referenceId    String    // Order number, quotation ID, etc.
+  documentNumber String    // Human-readable number (e.g. RCP-xxx, QT-xxx)
+  createdById    String?
+  expiresAt      DateTime?
+  revokedAt      DateTime?
+  lastAccessedAt DateTime?
+  accessCount    Int       @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([shortCode])
+  @@index([referenceId, documentType])
+  @@index([expiresAt])
+}
+
+// ============== ENUMS ==============
+
+enum UserRole {
+  OWNER
+  ADMIN
+  STAFF
+}
+
+enum UserStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+  DISABLED
+  LOCKED
+  DELETED
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  REVOKED
+}
