@@ -186,7 +186,7 @@ export async function POST(req: NextRequest) {
           status: UserStatus.ACTIVE,
           emailVerified: true,
           permissions: (permissions && permissions.length > 0) ? permissions : DEFAULT_ROLE_PERMISSIONS[role],
-          mustChangePassword: true, // Temporary password — force change on first login
+          mustChangePassword: false, // Direct account — login immediately with set password
           jobTitle: jobTitle || null,
           phone: phone || null,
           invitedById: currentUser.id,
