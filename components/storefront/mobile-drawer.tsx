@@ -14,6 +14,7 @@ import {
   Heart,
   ChevronDown,
 } from "lucide-react";
+import { JJLogo } from "@/components/ui/jj-logo";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { useMobileMenu } from "@/lib/store/mobile-menu";
@@ -111,25 +112,19 @@ export function MobileDrawer() {
         <div className="flex items-center justify-between px-5 h-16 shrink-0 sticky top-0 bg-[#fbf8f3] z-10">
           <Link
             href="/"
-            className="flex items-center gap-2.5"
             onClick={close}
           >
-            <img
-              src="/images/johannesjohn-logo-blue.png"
-              alt="JohannesJohn"
-              className="h-8 w-auto"
-            />
-            <span className="text-base font-bold text-foreground">JohannesJohn</span>
+            <JJLogo variant="inline" />
           </Link>
           <div className="flex items-center gap-1">
             <Link
               href="/wishlist"
-              className="flex items-center justify-center h-11 w-11 rounded-lg text-muted-foreground hover:text-[#0d41e2] hover:bg-[#0d41e2]/5 transition-colors relative"
+              className="flex items-center justify-center h-11 w-11 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors relative"
               onClick={close}
             >
               <Heart className="h-5 w-5" />
               {wishlistCount > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#0d41e2] px-1 text-[10px] font-bold leading-none text-white ring-2 ring-[#fbf8f3]">
+                <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold leading-none text-white ring-2 ring-[#fbf8f3]">
                   {wishlistCount > 99 ? "99+" : wishlistCount}
                 </span>
               )}

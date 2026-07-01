@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
+import { JJLogo } from "@/components/ui/jj-logo";
 import { useCart } from "@/lib/store/cart";
 import { useWishlist } from "@/lib/store/wishlist";
 import { useMobileMenu } from "@/lib/store/mobile-menu";
@@ -25,6 +26,7 @@ import { useDashboardStore } from "@/lib/store/dashboard";
 import { buildShopUrl, getActiveBrands, groupActiveCategories } from "@/lib/storefront-navigation";
 import { buildWhatsAppUrl, formatWhatsAppPhone } from "@/lib/whatsapp-url";
 import { isPublicPromotion } from "@/lib/promotion-visibility";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 
 
@@ -182,8 +184,10 @@ export function StorefrontHeader() {
               </>
             )}
           </div>
-          {/* Payment method tags - right side, hidden on mobile, no width constraint */}
-          <div className="hidden sm:flex items-center gap-1">
+          {/* Theme toggle + Payment method tags - right side, hidden on mobile */}
+          <div className="hidden sm:flex items-center gap-2">
+            <ThemeToggle variant="topbar" />
+            <span className="text-white/20">|</span>
             {activePayments.length > 0 ? (
               <div className="flex items-center gap-1">
                 {activePayments.map(pm => (
@@ -204,18 +208,8 @@ export function StorefrontHeader() {
 
       <div className="bg-background">
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex-shrink-0 flex items-center gap-2.5">
-            <img
-              src="/images/johannesjohn-logo-blue.png"
-              alt="JohannesJohn"
-              className="h-9 w-auto"
-            />
-            <span className="leading-tight">
-              <span className="block text-lg font-bold text-foreground">JohannesJohn</span>
-              <span className="hidden text-[11px] font-semibold text-primary sm:block">
-                Electronics retail
-              </span>
-            </span>
+          <Link href="/" className="flex-shrink-0">
+            <JJLogo variant="logo" />
           </Link>
 
           <div className="hidden md:flex flex-1 max-w-xl mx-auto">
@@ -297,12 +291,12 @@ export function StorefrontHeader() {
             {/* Wishlist icon */}
             <Link
               href="/wishlist"
-              className="relative flex items-center justify-center h-10 w-10 rounded-lg text-muted-foreground hover:text-[#0d41e2] hover:bg-[#0d41e2]/5 transition-colors"
+              className="relative flex items-center justify-center h-10 w-10 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors"
               aria-label={`Wishlist (${wishlistCount} items)`}
             >
               <Heart className="h-5 w-5" />
               {wishlistCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#0d41e2] px-1 text-[10px] font-bold leading-none text-white ring-2 ring-background">
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold leading-none text-white ring-2 ring-background">
                   {wishlistCount > 99 ? "99+" : wishlistCount}
                 </span>
               )}

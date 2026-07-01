@@ -15,9 +15,9 @@ export function DashboardToaster() {
         },
         classNames: {
           success:
-            "!bg-[#E8F7EE] !text-[#15803D] !border-[#15803D]/30",
+            "!bg-success-soft !text-success !border-success/30",
           error:
-            "!bg-[#e8eeff] !text-[#0d41e2] !border-[#0d41e2]/30",
+            "!bg-accent !text-primary !border-primary/30",
         },
       }}
     />

@@ -27,6 +27,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { JJLogo } from "@/components/ui/jj-logo";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useState } from "react";
 import { UserRole } from "@/lib/enums";
 import { hasPermission, Permissions, type Permission } from "@/lib/permissions";
@@ -127,8 +129,9 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
       <div className="flex h-16 items-center justify-between border-b border-border px-4">
         {!collapsed && (
           <div className="flex items-center gap-1.5">
-            <Link href="/dashboard" className="text-lg font-bold tracking-tight">
-              Fusion<span className="text-primary">Zone</span>
+            <Link href="/dashboard" className="flex items-center gap-1">
+              <JJLogo className="h-7 w-7" />
+              <span className="text-base font-bold tracking-tight text-foreground">JohannesJohn</span>
             </Link>
             <a
               href="/"
@@ -139,6 +142,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
             >
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
+            <ThemeToggle />
           </div>
         )}
         <Button

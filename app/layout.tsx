@@ -32,9 +32,9 @@ export const metadata: Metadata = {
     "gaming",
   ],
   icons: {
-    icon: [{ url: "/favicon.ico?v=3", sizes: "48x48", type: "image/x-icon" }],
-    shortcut: "/favicon.ico?v=3",
-    apple: "/icon.png?v=3",
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    shortcut: "/favicon.svg",
+    apple: "/icon.svg",
   },
 };
 
@@ -65,9 +65,14 @@ export default function RootLayout({
 
 #dt-initial-loader .dt-brand {
   display: flex;
-  align-items: baseline;
-  gap: 0.125rem;
+  align-items: center;
+  gap: 0.75rem;
   user-select: none;
+}
+
+#dt-initial-loader .dt-brand-mark {
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 #dt-initial-loader .dt-brand-name {
@@ -104,6 +109,10 @@ export default function RootLayout({
         />
         <div id="dt-initial-loader">
           <div className="dt-brand">
+            <svg viewBox="0 0 100 100" fill="none" className="dt-brand-mark" aria-hidden="true" style={{ animation: "jjMarkFloat 2s ease-in-out infinite" }}>
+              <path d="M10 15 L10 54 C10 72 22 80 36 80 L44 80 L44 68 L36 68 C28 68 24 64 24 56 L24 15 Z" fill="#0d41e2"/>
+              <path d="M48 15 L48 54 C48 72 60 80 74 80 L82 80 L82 68 L74 68 C66 68 62 64 62 56 L62 15 Z" fill="#1a1a1a"/>
+            </svg>
             <span className="dt-brand-name">JohannesJohn</span>
           </div>
           <div className="dt-bar-track">

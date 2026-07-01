@@ -148,7 +148,7 @@ export default function ProductDetailPage() {
               })}
               className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-xl bg-white/90 backdrop-blur-sm border border-border shadow-sm hover:shadow-md transition-all"
             >
-              <Heart className={cn("h-5 w-5", wishlisted ? "fill-[#0d41e2] text-[#0d41e2]" : "text-muted-foreground")} />
+              <Heart className={cn("h-5 w-5", wishlisted ? "fill-primary text-primary" : "text-muted-foreground")} />
             </button>
           </div>
 

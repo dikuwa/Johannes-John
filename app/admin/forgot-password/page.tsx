@@ -8,7 +8,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Mail, AlertCircle, CheckCircle } from "lucide-react";
-import Image from "next/image";
+import { JJLogo } from "@/components/ui/jj-logo";
 import { useDashboardStore } from "@/lib/store/dashboard";
 
 export default function ForgotPasswordPage() {
@@ -90,14 +90,7 @@ export default function ForgotPasswordPage() {
           {/* Header */}
           <div className="mb-8 text-center">
             <div className="mb-5 flex justify-center">
-              <Image
-                src="/images/johannesjohn-logo-blue.png"
-                alt={storeName}
-                width={92}
-                height={80}
-                priority
-                className="h-20 w-auto"
-              />
+              <JJLogo className="h-20 w-20" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
               Forgot Password?

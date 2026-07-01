@@ -46,3 +46,4 @@ boost_interprocess/
 
 # ── TNT Shadow Files ──
 tnt*/
+.vercel

@@ -18,6 +18,7 @@ import {
   Download,
   Mail,
 } from "lucide-react";
+import { JJLogo } from "@/components/ui/jj-logo";
 import { useDashboardStore } from "@/lib/store/dashboard";
 import { cn } from "@/lib/utils";
 import {
@@ -554,14 +555,7 @@ export default function QuotationDetailPage() {
         {/* Header */}
         <div className="px-6 py-5 border-b border-border flex items-start justify-between">
           <div className="flex items-start gap-3">
-            <img
-              src="/images/johannesjohn-logo-blue.png"
-              alt="JohannesJohn"
-              className="h-10 w-auto object-contain mt-0.5"
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-              }}
-            />
+            <JJLogo className="h-10 w-10 shrink-0 mt-0.5" />
             <div>
               <h2 className="text-base font-bold text-foreground">{storeSettings.storeName || "JohannesJohn"}</h2>
               <p className="text-xs text-muted-foreground mt-0.5">{storeSettings.address || "Windhoek, Namibia"}</p>

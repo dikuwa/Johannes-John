@@ -1,6 +1,6 @@
 # Desert Technology Consultant — Design Style Guide
 
-Dark mode: NOT supported in this project. Do not add `.dark` classes, next-themes, ThemeProvider, dark palettes, or dark mode toggles.
+Dark mode: Supported via `next-themes` with class-based `.dark` overrides. The toggle is in the storefront header top bar. Dark mode is opt-in — users click the sun/moon icon to switch. See `app/globals.css` for the `.dark` CSS variable overrides.
 
 ## Visual reference
 The visual direction is based on two minimalist ecommerce references: clean product grids, large white space, soft grey product image panels, compact category/filter sidebars, small rounded buttons, subtle borders, and a professional retail dashboard feel. The first reference uses bold black-and-white retail styling with compact black CTAs. The second reference uses a clean ecommerce admin/catalog feel with rounded product cards, light grey backgrounds, clear filters, small badges, and a vivid accent color. Desert Technology should merge these into a modern Namibian tech store: white surfaces, light grey panels, black text, orange brand CTAs, and WhatsApp/call actions that are more prominent than online payment actions.

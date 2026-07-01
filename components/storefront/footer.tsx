@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Phone, MessageCircle, Mail, MapPin, Building2, Banknote } from "lucide-react";
+import { JJLogo } from "@/components/ui/jj-logo";
 import { useDashboardStore } from "@/lib/store/dashboard";
 import { buildWhatsAppUrl } from "@/lib/whatsapp-url";
 
@@ -28,14 +29,7 @@ export function StorefrontFooter() {
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2.5">
-              <img
-                src="/images/johannesjohn-logo-white.png"
-                alt="JohannesJohn"
-                className="h-8 w-auto"
-              />
-              <span className="text-lg font-bold">JohannesJohn</span>
-            </div>
+            <JJLogo variant="logo" inverted />
             <p className="mt-3 text-sm leading-relaxed text-white/70">
               {settings.footerDescription || DEFAULT_FOOTER_DESCRIPTION}
             </p>

@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff, User, Lock, CheckCircle, AlertCircle, ArrowLeft } from "lucide-react";
-import Image from "next/image";
+import { JJLogo } from "@/components/ui/jj-logo";
 
 export default function AcceptInvitationPage() {
   const router = useRouter();
@@ -179,14 +179,7 @@ export default function AcceptInvitationPage() {
           {/* Header */}
           <div className="mb-8 text-center">
             <div className="mb-5 flex justify-center">
-              <Image
-                src="/images/johannesjohn-logo-blue.png"
-                alt="JohannesJohn"
-                width={92}
-                height={80}
-                priority
-                className="h-20 w-auto"
-              />
+              <JJLogo className="h-20 w-20" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
               Accept Invitation

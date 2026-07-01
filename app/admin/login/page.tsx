@@ -10,7 +10,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, LogIn } from "lucide-react";
-import Image from "next/image";
+import { JJLogo } from "@/components/ui/jj-logo";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -70,15 +71,10 @@ export default function AdminLoginPage() {
         <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
           {/* Logo */}
           <div className="mb-8 text-center">
-            <div className="mb-5 flex justify-center">
-              <Image
-                src="/images/johannesjohn-logo-blue.png"
-                alt="JohannesJohn"
-                width={92}
-                height={80}
-                priority
-                className="h-20 w-auto"
-              />
+            <div className="mb-4 flex items-center justify-between gap-2">
+              <div className="w-7" />
+              <JJLogo className="h-20 w-20" />
+              <ThemeToggle />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
               {requiresTwoFactor ? "Verify Two-Factor Code" : "Staff Sign In"}
