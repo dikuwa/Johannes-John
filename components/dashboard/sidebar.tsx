@@ -28,7 +28,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { JJLogo } from "@/components/ui/jj-logo";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useState } from "react";
 import { UserRole } from "@/lib/enums";
 import { hasPermission, Permissions, type Permission } from "@/lib/permissions";
@@ -142,7 +141,6 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
             >
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
-            <ThemeToggle />
           </div>
         )}
         <Button

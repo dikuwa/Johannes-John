@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --color-background: oklch(0.985 0.006 78);
   --color-foreground: oklch(0.168 0.014 78);
@@ -68,66 +66,6 @@
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.06), 0 8px 10px -6px rgb(0 0 0 / 0.04);
 }
 
-/* ── Dark mode overrides ── */
-.dark {
-  --color-background: oklch(0.145 0.012 240);
-  --color-foreground: oklch(0.92 0.008 78);
-  --color-card: oklch(0.18 0.014 240);
-  --color-card-foreground: oklch(0.92 0.008 78);
-  --color-popover: oklch(0.18 0.014 240);
-  --color-popover-foreground: oklch(0.92 0.008 78);
-  --color-primary: #3b82f6;
-  --color-primary-foreground: oklch(0.985 0.005 78);
-  --color-secondary: oklch(0.92 0.008 78);
-  --color-secondary-foreground: oklch(0.145 0.012 240);
-  --color-muted: oklch(0.22 0.014 240);
-  --color-muted-foreground: oklch(0.6 0.015 240);
-  --color-accent: oklch(0.2 0.04 260);
-  --color-accent-foreground: oklch(0.85 0.03 250);
-  --color-destructive: oklch(0.55 0.19 25);
-  --color-destructive-foreground: oklch(0.97 0.005 78);
-  --color-border: oklch(0.25 0.014 240);
-  --color-input: oklch(0.25 0.014 240);
-  --color-ring: #3b82f6;
-  --color-success: #22c55e;
-  --color-success-soft: oklch(0.2 0.06 145);
-  --color-warning: oklch(0.68 0.14 75);
-  --color-warning-soft: oklch(0.22 0.06 75);
-  --color-info: oklch(0.55 0.13 240);
-  --color-info-soft: oklch(0.2 0.04 240);
-  --color-whatsapp: oklch(0.65 0.15 148);
-  --color-whatsapp-hover: oklch(0.58 0.15 148);
-  --color-whatsapp-soft: oklch(0.2 0.06 148);
-  --color-topbar: #0d41e2;
-  --color-gray-50: oklch(0.18 0.014 240);
-  --color-gray-100: oklch(0.22 0.014 240);
-  --color-gray-200: oklch(0.25 0.014 240);
-  --color-gray-300: oklch(0.3 0.014 240);
-  --color-gray-400: oklch(0.45 0.015 240);
-  --color-gray-500: oklch(0.55 0.015 240);
-  --color-gray-600: oklch(0.6 0.015 240);
-  --color-gray-700: oklch(0.7 0.01 240);
-  --color-gray-800: oklch(0.8 0.008 240);
-  --color-gray-900: oklch(0.92 0.008 78);
-}
-
-.dark .bg-noise {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Cpath d='M1 0h1v1H1zM2 2h1v1H2zM0 3h1v1H0z' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E");
-}
-
-.dark ::selection {
-  background: var(--color-accent);
-  color: var(--color-foreground);
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-muted-foreground);
-}
-
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -137,26 +75,6 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   color-scheme: light;
-}
-
-html.dark {
-  color-scheme: dark;
-}
-
-/* ── Smooth theme transitions ── */
-/* Only color-related properties transition,  and only at 0.25s max — */
-/* short enough to avoid impacting hover states, long enough to feel smooth. */
-*, *::before, *::after {
-  transition: background-color 0.25s ease,
-              border-color 0.25s ease,
-              color 0.25s ease,
-              fill 0.25s ease,
-              stroke 0.25s ease;
-}
-
-/* Exclude elements with explicit animations from theme transitions */
-[style*="animation"] {
-  transition: none !important;
 }
 
 body {

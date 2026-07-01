@@ -26,7 +26,6 @@ import { useDashboardStore } from "@/lib/store/dashboard";
 import { buildShopUrl, getActiveBrands, groupActiveCategories } from "@/lib/storefront-navigation";
 import { buildWhatsAppUrl, formatWhatsAppPhone } from "@/lib/whatsapp-url";
 import { isPublicPromotion } from "@/lib/promotion-visibility";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 
 
@@ -184,10 +183,8 @@ export function StorefrontHeader() {
               </>
             )}
           </div>
-          {/* Theme toggle + Payment method tags - right side, hidden on mobile */}
+          {/* Payment method tags - right side, hidden on mobile */}
           <div className="hidden sm:flex items-center gap-2">
-            <ThemeToggle variant="topbar" />
-            <span className="text-white/20">|</span>
             {activePayments.length > 0 ? (
               <div className="flex items-center gap-1">
                 {activePayments.map(pm => (
