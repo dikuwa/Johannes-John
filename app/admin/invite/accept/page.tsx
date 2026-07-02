@@ -179,7 +179,7 @@ export default function AcceptInvitationPage() {
           {/* Header */}
           <div className="mb-8 text-center">
             <div className="mb-5 flex justify-center">
-              <JJLogo className="h-20 w-20" />
+              <JJLogo className="mx-auto h-20 w-24" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
               Accept Invitation

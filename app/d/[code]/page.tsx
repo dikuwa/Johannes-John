@@ -11,6 +11,7 @@
 import { resolveShortLink } from "@/lib/document-share";
 import { verifyDocumentToken } from "@/lib/document-tokens";
 import { DocumentPublicView } from "./document-public-view";
+import { JJLogo } from "@/components/ui/jj-logo";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -66,10 +67,7 @@ function ErrorState({ error }: { error: { code: string; message: string } }) {
         {/* Logo */}
         <div className="flex justify-center">
           <div className="flex items-center gap-3">
-            <svg viewBox="0 0 100 100" fill="none" className="h-10 w-10 shrink-0" aria-hidden="true">
-              <path d="M10 15 L10 54 C10 72 22 80 36 80 L44 80 L44 68 L36 68 C28 68 24 64 24 56 L24 15 Z" fill="#0d41e2"/>
-              <path d="M48 15 L48 54 C48 72 60 80 74 80 L82 80 L82 68 L74 68 C66 68 62 64 62 56 L62 15 Z" fill="#1a1a1a"/>
-            </svg>
+            <JJLogo className="h-10 w-11 shrink-0" />
             <span className="text-lg font-bold text-foreground">
               JohannesJohn
             </span>

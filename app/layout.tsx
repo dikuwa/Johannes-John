@@ -109,10 +109,7 @@ export default function RootLayout({
         />
         <div id="dt-initial-loader">
           <div className="dt-brand">
-            <svg viewBox="0 0 100 100" fill="none" className="dt-brand-mark" aria-hidden="true" style={{ animation: "jjMarkFloat 2s ease-in-out infinite" }}>
-              <path d="M10 15 L10 54 C10 72 22 80 36 80 L44 80 L44 68 L36 68 C28 68 24 64 24 56 L24 15 Z" fill="#0d41e2"/>
-              <path d="M48 15 L48 54 C48 72 60 80 74 80 L82 80 L82 68 L74 68 C66 68 62 64 62 56 L62 15 Z" fill="#1a1a1a"/>
-            </svg>
+            <img src="/brand/logo-full.svg" alt="" className="dt-brand-mark" style={{ animation: "jjMarkFloat 2s ease-in-out infinite" }} />
             <span className="dt-brand-name">JohannesJohn</span>
           </div>
           <div className="dt-bar-track">
